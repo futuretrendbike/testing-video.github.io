@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE-edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bicycle Sensor's Reading</title>
+    <style>
+        body {
+            background-color: #a0d8f1;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .white-box.left {
+            background-color: white;
+            border: 1px solid #ccc;
+            width: 1000px;
+            height: 450px;
+            padding: 20px;
+            margin: 20px;
+        }
+
+        .white-box-container {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+        }
+
+        .white-box.bottom-left {
+            background-color: white;
+            border: 1px solid #ccc;
+            width: 1000px;
+            height: 170px;
+            padding: 20px;
+            margin: 20px;
+        }
+
+        #data-container {
+            background-color: white;
+            border: 1px solid #ccc;
+            width: 300px;
+            height: 50px;
+            padding: 20px;
+            margin: 20px;
+            overflow: auto;
+        }
+
+        .white-box {
+            background-color: white;
+            border: 1px solid #ccc;
+            width: 300px;
+            height: 50px;
+            padding: 20px;
+            margin: 20px;
+        }
+
+        .box-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .video-label {
+            margin-top: 10px; 
+        }
+    </style>
+</head>
+<body>
+    <div class="white-box-container">
+        <div class="white-box left">
+            <div class="box-title">Video</div>
+            <iframe id="video-stream" width="1000" height="400" frameborder="0"></iframe>
+            <div class="video-label"></div> 
+        </div>
+        <div class="white-box bottom-left">
+            <div class="box-title">9 Points Sensor</div>
+        </div>
+    </div>
+
+    <div class="white-box-container">
+        <div class="white-box">
+            <div class="box-title">Date</div>
+        </div>
+        <div class="white-box" id="data-container">
+            <div class="box-title">G-sensor (X, Y, Z)</div>
+            Data :
+        </div>
+         <div class="white-box">
+            <div class="box-title">Speed</div>
+        </div>
+        <div class="white-box">
+            <div class="box-title">Acceleration</div>
+        </div>
+        <div class="white-box">
+            <div class="box-title">Position Coordinate</div>
+        </div>
+        <div class="white-box">
+            <div class="box-title">Tilt Level</div>
+        </div>
+    </div>
+
+    <script>
+        var videos = [
+            { src: "https://drive.google.com/file/d/1oqaRW1nWw2-jhqwJYPSo8r9ZOoZC1l7W/preview", name: "Name : Video 1" },
+            { src: "https://drive.google.com/file/d/1BwDf42UAmIUxLMo--ud2mBpsNkOttFc6/preview", name: "Name : Video 2" },
+            { src: "https://drive.google.com/file/d/1fUT1Q0nVGt4jRubusOJrucm4prXGnit0/preview", name: "Name : Video 3" },
+            { src: "https://drive.google.com/file/d/1ZBJi9o68fz_KZCrvrS6ALZPdnSYfiMQz/preview", name: "Name : Video 4" },
+            { src: "https://drive.google.com/file/d/1Dsoc2fnbD7-hG62cXV5wJn2qjMFFQPbg/preview", name: "Name : Video 5" },
+            { src: "https://drive.google.com/file/d/1ZOOz0B3O5aoRoL2wCt7MhtL_ZC_jgN9O/preview", name: "Name : Video 6" },
+            { src: "https://drive.google.com/file/d/1DoQstd0_VJH6879tnJE13OYY0as2ZWKB/preview", name: "Name : Video 7" },
+            { src: "https://drive.google.com/file/d/1KpPhhsVl6_By_2gEn-ldRXZakMJxMvhD/preview", name: "Name : Video 8" },
+            { src: "https://drive.google.com/file/d/1ZaXJxWNc8u__zSYkHBGlAYF6RGk02yov/preview", name: "Name : Video 9" },
+            { src: "https://drive.google.com/file/d/1w6fh9MA2NBKMUeIvZVy9oI-EvAwuu7nw/preview", name: "Name : Video 10" },
+
+        ];
+
+        var currentVideoIndex = 0;
+        var videoPlayer = document.getElementById('video-stream');
+        var videoLabel = document.querySelector('.video-label');
+
+        function playNextVideo() {
+            if (videos[currentVideoIndex]) {
+                var videoSrc = videos[currentVideoIndex].src;
+                var tempVideo = document.createElement('video');
+                var canPlay = tempVideo.canPlayType('video/mp4'); 
+
+                if (canPlay === 'probably' || canPlay === 'maybe') {
+                    videoPlayer.src = videoSrc;
+                    videoLabel.textContent = videos[currentVideoIndex].name;
+                    currentVideoIndex = (currentVideoIndex + 1) % videos.length;
+                } else {
+                    videoPlayer.src = '';
+                    videoLabel.textContent = "Server is busy";
+                }
+            } else {
+                videoPlayer.src = '';
+                videoLabel.textContent = "Server is busy";
+            }
+        }
+
+        setInterval(playNextVideo, 20000);
+    </script>
+</body>
+</html>
